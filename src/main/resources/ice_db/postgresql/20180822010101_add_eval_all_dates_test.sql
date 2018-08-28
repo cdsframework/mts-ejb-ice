@@ -26,26 +26,25 @@
 -- correspondence to ice@hln.com.
 --
 
--- // ice_test_evaluation
+-- // add propsalType
 -- Migration SQL that makes the change goes here.
 
-create table ice_test_evaluation (
-            evaluation_id varchar(32) primary key,
-            event_component_id varchar(32),
-            eval_interpret_id varchar(32),
-            last_mod_datetime timestamp not null,
-            last_mod_id varchar(32) not null,
-            create_datetime timestamp not null,
-            create_id varchar(32) not null);
+drop view vw_ice_test;
 
-alter table ice_test_evaluation add constraint fk_iceeid2cccid foreign key (eval_interpret_id) references cds_code (code_id);
+alter table ice_test add column evaluate_all_dates boolean;
 
-alter table ice_test_evaluation add constraint ce2cec_ecid foreign key (event_component_id) references ice_test_event_component (event_component_id);
+create view vw_ice_test as select it.*, itg.name as group_name, itg.suite_id, its.name as suite_name, its.version_id 
+       from ice_test it, ice_test_group itg, ice_test_suite its 
+       where it.group_id = itg.group_id and itg.suite_id = its.suite_id;
 
-INSERT INTO ice_test_evaluation (evaluation_id, event_component_id, eval_interpret_id, last_mod_datetime, last_mod_id, create_datetime, create_id) 
-    VALUES ('68ca649dabcd4824aac203bade94c849', 'f789c34b5552dc4b9d53750b196b8254', 'd7564f45ccf2014cab139b637eb735ba', CURRENT_TIMESTAMP, 'admin', CURRENT_TIMESTAMP, 'admin');
 
 -- //@UNDO
 -- SQL to undo the change goes here.
 
-drop table ice_test_evaluation;
+drop view vw_ice_test;
+
+alter table ice_test drop column evaluate_all_dates;
+
+create view vw_ice_test as select it.*, itg.name as group_name, itg.suite_id, its.name as suite_name, its.version_id 
+       from ice_test it, ice_test_group itg, ice_test_suite its 
+       where it.group_id = itg.group_id and itg.suite_id = its.suite_id;

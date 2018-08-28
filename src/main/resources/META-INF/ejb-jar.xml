@@ -10,6 +10,12 @@
         <session>
             <ejb-name>IcePlugin</ejb-name>
 
+            <env-entry>
+                <env-entry-name>ICE_DATE_LEGACY_MODE</env-entry-name>
+                <env-entry-type>java.lang.Boolean</env-entry-type>
+                <env-entry-value>false</env-entry-value>
+            </env-entry>
+
             <!-- test mgmt -->
             <env-entry>
                 <env-entry-name>TEST_MGR_TEST_SUBMISSION_Q_SIZE</env-entry-name>
