@@ -7,23 +7,27 @@
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version. You should have received a copy of the GNU Lesser
- * General Public License along with this program. If not, see <http://www.gnu.org/licenses/> for more
- * details.
+ * General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/> for more details.
  *
- * The above-named contributors (HLN Consulting, LLC) are also licensed by the New York City
- * Department of Health and Mental Hygiene, Bureau of Immunization to have (without restriction,
- * limitation, and warranty) complete irrevocable access and rights to this project.
+ * The above-named contributors (HLN Consulting, LLC) are also licensed by the
+ * New York City Department of Health and Mental Hygiene, Bureau of Immunization
+ * to have (without restriction, limitation, and warranty) complete irrevocable
+ * access and rights to this project.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; THE
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; THE
  *
- * SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING,
- * BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS, IF ANY, OR DEVELOPERS BE LIABLE FOR
- * ANY CLAIM, DAMAGES, OR OTHER LIABILITY OF ANY KIND, ARISING FROM, OUT OF, OR IN CONNECTION WITH
- * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING, BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDERS, IF ANY, OR DEVELOPERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR
+ * OTHER LIABILITY OF ANY KIND, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * For more information about this software, see https://www.hln.com/services/open-source/ or send
- * correspondence to ice@hln.com.
+ * For more information about this software, see
+ * https://www.hln.com/services/open-source/ or send correspondence to
+ * ice@hln.com.
  */
 package org.cdsframework.ejb.local;
 
@@ -128,7 +132,7 @@ public class IceTestMgrLocal {
             newIceTestSuiteDTO.setName(newSuiteName);
             newIceTestSuiteDTO.setCdsVersionDTO(iceTestSuiteDTO.getCdsVersionDTO());
             newIceTestSuiteDTO.setNotes(iceTestSuiteDTO.getNotes());
-            newIceTestSuiteDTO = iceTestSuiteBO.addMainNew(newIceTestSuiteDTO, Add.class, sessionDTO, new PropertyBagDTO());
+            newIceTestSuiteDTO = iceTestSuiteBO.addMain(newIceTestSuiteDTO, Add.class, sessionDTO, new PropertyBagDTO());
 
             // go through groups and create new ones and then
             for (IceTestGroupDTO iceTestGroupDTO : iceTestSuiteDTO.getIceTestGroupDTOs()) {
@@ -139,7 +143,7 @@ public class IceTestMgrLocal {
                 newIceTestGroupDTO.setIgnore(iceTestGroupDTO.isIgnore());
                 newIceTestGroupDTO.setName(iceTestGroupDTO.getName());
                 newIceTestGroupDTO.setSuiteId(newIceTestSuiteDTO.getSuiteId());
-                newIceTestGroupDTO = iceTestGroupBO.addMainNew(newIceTestGroupDTO, Add.class, sessionDTO, new PropertyBagDTO());
+                newIceTestGroupDTO = iceTestGroupBO.addMain(newIceTestGroupDTO, Add.class, sessionDTO, new PropertyBagDTO());
                 logger.info(METHODNAME, "added: ", newIceTestGroupDTO.getName(), " - ", newIceTestGroupDTO.getGroupId(), " - to: ", newIceTestSuiteDTO.getName());
 
                 // clone tests
@@ -277,6 +281,7 @@ public class IceTestMgrLocal {
         long start = System.nanoTime();
         try {
             String newTestName = (String) propertyBagDTO.get("newTestName");
+            logger.info(METHODNAME, "newTestName=", newTestName);
             if (StringUtils.isEmpty(newTestName)) {
                 throw new ValidationException("New test name was null or empty.");
             }
@@ -291,6 +296,8 @@ public class IceTestMgrLocal {
 
     private IceTestDTO cloneIceTestDTO(IceTestDTO iceTestDTO, SessionDTO sessionDTO)
             throws ValidationException, NotFoundException, ConstraintViolationException, MtsException, AuthenticationException, AuthorizationException {
+        final String METHODNAME = "cloneIceTestDTO ";
+        logger.debug(METHODNAME, "called.");
 
         // initialize the event id map for mapping old to new ids...
         Map<String, String> eventIdMap = new HashMap<String, String>();
@@ -302,10 +309,11 @@ public class IceTestMgrLocal {
         List<IceTestProposalDTO> iceTestProposalDTOs = iceTestDTO.getIceTestProposalDTOs();
 
         // add a new test
-        iceTestDTO.setChildDTOMap(new HashMap<Class, List<BaseDTO>>());
+        iceTestDTO.setChildDTOMap(new HashMap());
         iceTestDTO.setTestId(null);
         DTOUtils.setDTOState(iceTestDTO, DTOState.NEW);
-        iceTestDTO = iceTestBO.addMainNew(iceTestDTO, Add.class, sessionDTO, new PropertyBagDTO());
+        iceTestDTO = iceTestBO.addMain(iceTestDTO, Add.class, sessionDTO, new PropertyBagDTO());
+        logger.info(METHODNAME, "iceTestDTO=", iceTestDTO);
 
         // add the IceTestVaccineGroupRelDTOs
         for (IceTestVaccineGroupRelDTO iceTestVaccineGroupRelDTO : iceTestVaccineGroupRelDTOs) {
@@ -313,7 +321,7 @@ public class IceTestMgrLocal {
             DTOUtils.setDTOState(iceTestVaccineGroupRelDTO, DTOState.NEW);
             iceTestDTO.addOrUpdateChildDTO(iceTestVaccineGroupRelDTO);
         }
-        iceTestDTO = iceTestBO.updateMainNew(iceTestDTO, Update.class, sessionDTO, new PropertyBagDTO());
+        iceTestDTO = iceTestBO.updateMain(iceTestDTO, Update.class, sessionDTO, new PropertyBagDTO());
 
         // add the IceTestEventDTOs
         for (IceTestEventDTO iceTestEventDTO : iceTestEventDTOs) {
@@ -334,7 +342,7 @@ public class IceTestMgrLocal {
                 iceTestEventDTO.setOffsetId(eventIdMap.get(iceTestEventDTO.getOffsetId()));
             }
             DTOUtils.setDTOState(iceTestEventDTO, DTOState.NEW);
-            iceTestEventDTO = iceTestEventBO.addMainNew(iceTestEventDTO, Add.class, sessionDTO, new PropertyBagDTO());
+            iceTestEventDTO = iceTestEventBO.addMain(iceTestEventDTO, Add.class, sessionDTO, new PropertyBagDTO());
             String newEventId = iceTestEventDTO.getEventId();
             eventIdMap.put(originalEventId, newEventId);
             iceTestDTO.addOrUpdateChildDTO(iceTestEventDTO);
@@ -347,7 +355,7 @@ public class IceTestMgrLocal {
             DTOUtils.setDTOState(iceTestImmunityDTO, DTOState.NEW);
             iceTestDTO.addOrUpdateChildDTO(iceTestImmunityDTO);
         }
-        iceTestDTO = iceTestBO.updateMainNew(iceTestDTO, Update.class, sessionDTO, new PropertyBagDTO());
+        iceTestDTO = iceTestBO.updateMain(iceTestDTO, Update.class, sessionDTO, new PropertyBagDTO());
 
         // add the IceTestProposalDTOs
         for (IceTestProposalDTO iceTestProposalDTO : iceTestProposalDTOs) {
@@ -357,22 +365,22 @@ public class IceTestMgrLocal {
             }
             iceTestProposalDTO.setTestId(null);
             iceTestProposalDTO.setProposalId(null);
-            if (iceTestProposalDTO.getRecommendedOffsetId()!= null) {
+            if (iceTestProposalDTO.getRecommendedOffsetId() != null) {
                 iceTestProposalDTO.setRecommendedOffsetId(eventIdMap.get(iceTestProposalDTO.getRecommendedOffsetId()));
             }
-            if (iceTestProposalDTO.getEarliestOffsetId()!= null) {
+            if (iceTestProposalDTO.getEarliestOffsetId() != null) {
                 iceTestProposalDTO.setEarliestOffsetId(eventIdMap.get(iceTestProposalDTO.getEarliestOffsetId()));
             }
-            if (iceTestProposalDTO.getLatestOffsetId()!= null) {
+            if (iceTestProposalDTO.getLatestOffsetId() != null) {
                 iceTestProposalDTO.setLatestOffsetId(eventIdMap.get(iceTestProposalDTO.getLatestOffsetId()));
             }
-            if (iceTestProposalDTO.getOverdueOffsetId()!= null) {
+            if (iceTestProposalDTO.getOverdueOffsetId() != null) {
                 iceTestProposalDTO.setOverdueOffsetId(eventIdMap.get(iceTestProposalDTO.getOverdueOffsetId()));
             }
             DTOUtils.setDTOState(iceTestProposalDTO, DTOState.NEW);
             iceTestDTO.addOrUpdateChildDTO(iceTestProposalDTO);
         }
-        iceTestDTO = iceTestBO.updateMainNew(iceTestDTO, Update.class, sessionDTO, new PropertyBagDTO());
+        iceTestDTO = iceTestBO.updateMain(iceTestDTO, Update.class, sessionDTO, new PropertyBagDTO());
         return iceTestDTO;
     }
 
