@@ -33,7 +33,23 @@
     <enterprise-beans>
         <ejb>
             <ejb-name>IceTestDTOImporter</ejb-name>
-            <cmt-timeout-in-seconds>1200</cmt-timeout-in-seconds>
+            <cmt-timeout-in-seconds>7200</cmt-timeout-in-seconds>
+        </ejb>
+        <ejb>
+            <ejb-name>IceTestMgrLocal</ejb-name>
+            <cmt-timeout-in-seconds>7200</cmt-timeout-in-seconds>
+        </ejb>
+        <ejb>
+            <ejb-name>IceTestBO</ejb-name>
+            <cmt-timeout-in-seconds>7200</cmt-timeout-in-seconds>
+        </ejb>
+        <ejb>
+            <ejb-name>IceTestSuiteBO</ejb-name>
+            <cmt-timeout-in-seconds>7200</cmt-timeout-in-seconds>
+        </ejb>
+        <ejb>
+            <ejb-name>IceTestGroupBO</ejb-name>
+            <cmt-timeout-in-seconds>7200</cmt-timeout-in-seconds>
         </ejb>
     </enterprise-beans>
 </glassfish-ejb-jar>
