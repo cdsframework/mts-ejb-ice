@@ -45,7 +45,6 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.cdsframework.base.BaseDTO;
 import org.cdsframework.dto.IceTestDTO;
 import org.cdsframework.dto.IceTestEvaluationDTO;
 import org.cdsframework.dto.IceTestEventComponentDTO;
