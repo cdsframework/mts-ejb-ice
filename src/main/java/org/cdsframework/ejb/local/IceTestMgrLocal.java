@@ -110,8 +110,6 @@ public class IceTestMgrLocal {
         fullChildClasses.add(IceTestRecommendationDTO.class);
     }
 
-    @Asynchronous
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public void copySuite(IceTestSuiteDTO baseDTO, SessionDTO sessionDTO, PropertyBagDTO propertyBagDTO)
             throws MtsException, ValidationException, NotFoundException, AuthenticationException, AuthorizationException, ConstraintViolationException {
         final String METHODNAME = "copySuite ";
@@ -225,7 +223,7 @@ public class IceTestMgrLocal {
             newIceTestGroupDTO.setName(newGroupName);
             newIceTestGroupDTO.setSuiteId(baseDTO.getSuiteId());
             newIceTestGroupDTO = iceTestGroupBO.addMain(newIceTestGroupDTO, Add.class, sessionDTO, new PropertyBagDTO());
-            logger.info("added: ", newIceTestGroupDTO.getName(), " - ", newIceTestGroupDTO.getGroupId(), " - to: ", baseDTO.getSuiteId());
+            logger.debug("added: ", newIceTestGroupDTO.getName(), " - ", newIceTestGroupDTO.getGroupId(), " - to: ", baseDTO.getSuiteId());
 
             // clone tests
             IceTestDTO queryDTO = new IceTestDTO();
@@ -296,7 +294,7 @@ public class IceTestMgrLocal {
     private IceTestDTO cloneIceTestDTO(IceTestDTO iceTestDTO, SessionDTO sessionDTO)
             throws ValidationException, NotFoundException, ConstraintViolationException, MtsException, AuthenticationException, AuthorizationException {
         final String METHODNAME = "cloneIceTestDTO ";
-        logger.debug(METHODNAME, "called.");
+        logger.info(METHODNAME, "iceTestDTO=", iceTestDTO);
 
         // initialize the event id map for mapping old to new ids...
         Map<String, String> eventIdMap = new HashMap<String, String>();
@@ -312,7 +310,7 @@ public class IceTestMgrLocal {
         iceTestDTO.setTestId(null);
         DTOUtils.setDTOState(iceTestDTO, DTOState.NEW);
         iceTestDTO = iceTestBO.addMain(iceTestDTO, Add.class, sessionDTO, new PropertyBagDTO());
-        logger.info(METHODNAME, "iceTestDTO=", iceTestDTO);
+        logger.debug(METHODNAME, "iceTestDTO=", iceTestDTO);
 
         // add the IceTestVaccineGroupRelDTOs
         for (IceTestVaccineGroupRelDTO iceTestVaccineGroupRelDTO : iceTestVaccineGroupRelDTOs) {

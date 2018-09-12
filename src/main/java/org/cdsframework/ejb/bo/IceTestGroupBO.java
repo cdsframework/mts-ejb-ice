@@ -75,16 +75,16 @@ public class IceTestGroupBO extends BaseBO<IceTestGroupDTO> {
             throws ConstraintViolationException, NotFoundException, MtsException, ValidationException, AuthenticationException,
             AuthorizationException {
         final String METHODNAME = "postUpdate ";
-        long start = System.nanoTime();
+      //  long start = System.nanoTime();
 
         String operationName = propertyBagDTO.getOperationName();
-        logger.info("IceTestGroupBO postUpdate called: ", operationName);
+        logger.debug("IceTestGroupBO postUpdate called: ", operationName);
         if ("mergeGroup".equals(operationName)) {
             iceTestMgrLocal.mergeGroup(baseDTO, sessionDTO, propertyBagDTO);
         } else if ("copyGroup".equals(operationName)) {
             iceTestMgrLocal.copyGroup(baseDTO, sessionDTO, propertyBagDTO);
         }
-        logger.logDuration(METHODNAME, start);
+     //   logger.logDuration(METHODNAME, start);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class IceTestGroupBO extends BaseBO<IceTestGroupDTO> {
             AuthorizationException {
         final String METHODNAME = "updateParentsLastModDatetime ";
         Boolean overrideCreateModProperties = propertyBagDTO.get("isOverrideCreateModProperties", false);
-        logger.info(METHODNAME, "overrideCreateModProperties=", overrideCreateModProperties);
+        logger.debug(METHODNAME, "overrideCreateModProperties=", overrideCreateModProperties);
         if (!overrideCreateModProperties) {
             try {
                 if (baseDTO != null) {
@@ -151,7 +151,7 @@ public class IceTestGroupBO extends BaseBO<IceTestGroupDTO> {
             throws MtsException, ValidationException, NotFoundException, AuthenticationException, AuthorizationException {
         final String METHODNAME = "processEnd ";
         if (operation != Operation.FIND) {
-            logger.info(METHODNAME, "Calling update on parent lastModDatetime!");
+            logger.debug(METHODNAME, "Calling update on parent lastModDatetime!");
             updateParentsLastModDatetime(baseDTO, sessionDTO, propertyBagDTO);
         }
 //        Boolean overrideCreateModProperties = propertyBagDTO.get("isOverrideCreateModProperties", false);

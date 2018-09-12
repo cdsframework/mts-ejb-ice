@@ -32,7 +32,6 @@
 package org.cdsframework.ejb.bo;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -113,7 +112,7 @@ public class IceTestSuiteBO extends BaseBO<IceTestSuiteDTO> {
             throws ConstraintViolationException, NotFoundException, MtsException, ValidationException, AuthenticationException,
             AuthorizationException {
         final String METHODNAME = "postUpdate ";
-        long start = System.nanoTime();
+//        long start = System.nanoTime();
         String operationName = propertyBagDTO.getOperationName();
 
         if ("mergeSuites".equals(operationName)) {
@@ -138,7 +137,7 @@ public class IceTestSuiteBO extends BaseBO<IceTestSuiteDTO> {
                 }
             });
         }
-        logger.logDuration(METHODNAME, start);
+//        logger.logDuration(METHODNAME, start);
     }
 
     @Override

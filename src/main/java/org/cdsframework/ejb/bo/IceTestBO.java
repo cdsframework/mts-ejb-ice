@@ -96,39 +96,39 @@ public class IceTestBO extends BaseBO<IceTestDTO> {
         IceTestDTO testDTO = baseDTO;
         addEncodedName(testDTO);
         if (testDTO.isPropertyChanged("offsetBased")) {
-            logger.info(METHODNAME, "detected offsetBased change");
+            logger.debug(METHODNAME, "detected offsetBased change");
             if (testDTO.isOffsetBased()) {
-                logger.info(METHODNAME, "offsetBased was turned on...");
+                logger.debug(METHODNAME, "offsetBased was turned on...");
                 if (testDTO.getExecutionDate() != null && testDTO.getDob() != null) {
-                    logger.info(METHODNAME, "generating date diff for: ", testDTO.getDob(), " and ", testDTO.getExecutionDate());
+                    logger.debug(METHODNAME, "generating date diff for: ", testDTO.getDob(), " and ", testDTO.getExecutionDate());
                     String dateDiffYMD = DateUtils.getDateDiffYMD(testDTO.getDob(), testDTO.getExecutionDate(), true, false);
-                    logger.info(METHODNAME, " setting ageOffset to: ", dateDiffYMD);
+                    logger.debug(METHODNAME, " setting ageOffset to: ", dateDiffYMD);
                     testDTO.setOffset(dateDiffYMD);
 
                     // adjust events
                     for (IceTestEventDTO item : testDTO.getIceTestEventDTOs()) {
-                        logger.info(METHODNAME, "generating date diff for: ", testDTO.getDob(), " and ", item.getAdministrationTime());
+                        logger.debug(METHODNAME, "generating date diff for: ", testDTO.getDob(), " and ", item.getAdministrationTime());
                         String childDateDiffYMD = DateUtils.getDateDiffYMD(testDTO.getDob(), item.getAdministrationTime(), true, true);
                         item.setOffsetBased(true);
-                        logger.info(METHODNAME, " setting offsetFromAge to: ", childDateDiffYMD);
+                        logger.debug(METHODNAME, " setting offsetFromAge to: ", childDateDiffYMD);
                         item.setOffset(childDateDiffYMD);
                     }
 
                     // adjust immunity events
                     for (IceTestImmunityDTO item : testDTO.getIceTestImmunityDTOs()) {
-                        logger.info(METHODNAME, "generating date diff for: ", testDTO.getDob(), " and ", item.getObservationEventTime());
+                        logger.debug(METHODNAME, "generating date diff for: ", testDTO.getDob(), " and ", item.getObservationEventTime());
                         String childDateDiffYMD = DateUtils.getDateDiffYMD(testDTO.getDob(), item.getObservationEventTime(), true, true);
                         item.setOffsetBased(true);
-                        logger.info(METHODNAME, " setting offsetFromAge to: ", childDateDiffYMD);
+                        logger.debug(METHODNAME, " setting offsetFromAge to: ", childDateDiffYMD);
                         item.setOffset(childDateDiffYMD);
                     }
 
                     // adjust proposals
                     for (IceTestProposalDTO item : testDTO.getIceTestProposalDTOs()) {
-                        logger.info(METHODNAME, "generating date diff for: ", testDTO.getDob(), " and ", item.getRecommendedDate());
+                        logger.debug(METHODNAME, "generating date diff for: ", testDTO.getDob(), " and ", item.getRecommendedDate());
                         String childDateDiffYMD = DateUtils.getDateDiffYMD(testDTO.getDob(), item.getRecommendedDate(), true, true);
                         item.setOffsetBased(true);
-                        logger.info(METHODNAME, " setting offsetFromAge to: ", childDateDiffYMD);
+                        logger.debug(METHODNAME, " setting offsetFromAge to: ", childDateDiffYMD);
                         item.setRecommendedOffset(childDateDiffYMD);
                     }
 
@@ -140,10 +140,10 @@ public class IceTestBO extends BaseBO<IceTestDTO> {
                             testDTO.getExecutionDate());
                 }
             } else {
-                logger.info(METHODNAME, "offsetBased was turned off...");
+                logger.debug(METHODNAME, "offsetBased was turned off...");
             }
         } else {
-            logger.info(METHODNAME, "offsetBased was not changed...");
+            logger.debug(METHODNAME, "offsetBased was not changed...");
         }
     }
 
@@ -242,7 +242,7 @@ public class IceTestBO extends BaseBO<IceTestDTO> {
             AuthorizationException {
         final String METHODNAME = "updateParentsLastModDatetime ";
         Boolean overrideCreateModProperties = propertyBagDTO.get("isOverrideCreateModProperties", false);
-        logger.info(METHODNAME, "overrideCreateModProperties=", overrideCreateModProperties);
+        logger.debug(METHODNAME, "overrideCreateModProperties=", overrideCreateModProperties);
         if (!overrideCreateModProperties) {
             try {
                 if (baseDTO != null) {
@@ -322,7 +322,7 @@ public class IceTestBO extends BaseBO<IceTestDTO> {
                 || propertyBagDTO.getPropertyMap().containsKey("suiteId")
                 || propertyBagDTO.getPropertyMap().containsKey("groupId");
         if (!isTestRun && operation != Operation.FIND) {
-            logger.info(METHODNAME, "Calling update on parent lastModDatetime!");
+            logger.debug(METHODNAME, "Calling update on parent lastModDatetime!");
             updateParentsLastModDatetime(baseDTO, sessionDTO, propertyBagDTO);
 
         }
