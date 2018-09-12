@@ -33,7 +33,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.cdsframework.base.BaseBO;
 import org.cdsframework.dto.IceTestDTO;
-import org.cdsframework.dto.IceTestImmunityDTO;
 import org.cdsframework.dto.IceTestVaccineGroupRelDTO;
 import org.cdsframework.dto.PropertyBagDTO;
 import org.cdsframework.dto.SessionDTO;
@@ -73,7 +72,7 @@ public class IceTestVaccineGroupRelBO extends BaseBO<IceTestVaccineGroupRelDTO> 
             AuthorizationException {
         final String METHODNAME = "updateParentsLastModDatetime ";
         Boolean overrideCreateModProperties = propertyBagDTO.get("isOverrideCreateModProperties", false);
-        logger.info(METHODNAME, "overrideCreateModProperties=", overrideCreateModProperties);
+        logger.debug(METHODNAME, "overrideCreateModProperties=", overrideCreateModProperties);
         if (!overrideCreateModProperties) {
             try {
                 if (baseDTO != null) {
@@ -116,7 +115,7 @@ public class IceTestVaccineGroupRelBO extends BaseBO<IceTestVaccineGroupRelDTO> 
             throws MtsException, ValidationException, NotFoundException, AuthenticationException, AuthorizationException {
         final String METHODNAME = "processEnd ";
         if (operation != Operation.FIND) {
-            logger.info(METHODNAME, "Calling update on parent lastModDatetime!");
+            logger.debug(METHODNAME, "Calling update on parent lastModDatetime!");
             updateParentsLastModDatetime(baseDTO, sessionDTO, propertyBagDTO);
         }
     }
